@@ -2,6 +2,7 @@ package com.mobileia.location;
 
 import android.content.Context;
 import android.content.IntentFilter;
+import android.location.Location;
 
 import com.mobileia.location.factory.LocationServiceFactory;
 import com.mobileia.location.receiver.LocationResultReceiver;
@@ -57,6 +58,24 @@ public class MobileiaLocation {
         LocationServiceFactory.create(mContext);
     }
 
+    /**
+     * Funcion que se encarga de calcular la distanta entre dos coordenadas en metros
+     * @param lat1
+     * @param lng1
+     * @param lat2
+     * @param lng2
+     * @return
+     */
+    public float[] distanceBetween(double lat1, double lng1, double lat2, double lng2){
+        float[] results = new float[1];
+        Location.distanceBetween(lat1, lng1, lat2, lng2, results);
+        return results;
+    }
+
+    /**
+     * Funcion que registra el receiver de localización
+     * @param receiver
+     */
     protected void registerReceiver(LocationResultReceiver receiver){
         // Creamos intent con el action correspondiente
         IntentFilter intentFilter = new IntentFilter(LocationResultReceiver.ACTION_LOCATION_RESULT_SUCCESS);

@@ -33,12 +33,8 @@ public class LocationService extends Service {
         super.onCreate();
         // Verificar si tiene permisos para pedir la localización
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+            // Enviamos mensaje de error
+            sendErrorWithBroadcast("No tiene permisos");
             return;
         }
         // Ejecutar petición de localización
@@ -74,7 +70,6 @@ public class LocationService extends Service {
                 // Enviamos coordenadas
                 sendLocationWithBroadcast(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
             }
-
         };
     }
 
@@ -91,6 +86,21 @@ public class LocationService extends Service {
         // Asignamos coordenadas
         locationIntent.putExtra("latitude", latitude);
         locationIntent.putExtra("longitude", longitude);
+        // Enviamos broadcast
+        sendBroadcast(locationIntent);
+    }
+
+    /**
+     * Funcion que se encarga de enviar el error al broadcast
+     * @param error
+     */
+    protected void sendErrorWithBroadcast(String error){
+        // Creamos intent
+        Intent locationIntent = new Intent();
+        // Seteamos el Action correspondiente
+        locationIntent.setAction(LocationResultReceiver.ACTION_LOCATION_RESULT_ERROR);
+        // Asignamos mensaje de error
+        locationIntent.putExtra("message", error);
         // Enviamos broadcast
         sendBroadcast(locationIntent);
     }

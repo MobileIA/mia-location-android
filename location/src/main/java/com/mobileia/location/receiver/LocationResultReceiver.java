@@ -13,6 +13,7 @@ abstract public class LocationResultReceiver extends BroadcastReceiver {
      * Representa la Action que recibe las coordenadas
      */
     public static final String ACTION_LOCATION_RESULT_SUCCESS = "com.mobileia.location.ACTION_LOCATION_RESULT_SUCCESS";
+    public static final String ACTION_LOCATION_RESULT_ERROR = "com.mobileia.location.ACTION_LOCATION_RESULT_ERROR";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -23,10 +24,12 @@ abstract public class LocationResultReceiver extends BroadcastReceiver {
             double longitude = intent.getDoubleExtra("longitude", -1);
             // Llamar a metodo que obtiene las coordenadas
             onCoords(latitude, longitude);
+        }else if(null != intent && intent.getAction().equals(ACTION_LOCATION_RESULT_ERROR)){
+            onError();
         }
-        // Cancelamos receiver
-        //abortBroadcast();
     }
 
     abstract public void onCoords(double latitude, double longitude);
+
+    abstract public void onError();
 }

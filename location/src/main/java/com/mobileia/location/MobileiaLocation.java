@@ -42,6 +42,16 @@ public class MobileiaLocation {
                 // Paramos el servicio
                 LocationServiceFactory.stop(mContext);
             }
+
+            @Override
+            public void onError() {
+                // Ejecutamos el callback
+                callback.onError();
+                // Eliminamos receiver
+                mContext.unregisterReceiver(this);
+                // Paramos el servicio
+                LocationServiceFactory.stop(mContext);
+            }
         });
         // Ejecutamos el servicio
         LocationServiceFactory.create(mContext);
@@ -50,7 +60,7 @@ public class MobileiaLocation {
     protected void registerReceiver(LocationResultReceiver receiver){
         // Creamos intent con el action correspondiente
         IntentFilter intentFilter = new IntentFilter(LocationResultReceiver.ACTION_LOCATION_RESULT_SUCCESS);
-        //intentFilter.addAction(SettingsLocationTracker.ACTION_PERMISSION_DEINED);
+        intentFilter.addAction(LocationResultReceiver.ACTION_LOCATION_RESULT_ERROR);
         // Registramos el receiver
         mContext.registerReceiver(receiver, intentFilter);
     }

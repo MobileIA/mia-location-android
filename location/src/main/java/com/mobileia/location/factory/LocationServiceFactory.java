@@ -11,9 +11,11 @@ import com.mobileia.location.service.LocationService;
 
 public class LocationServiceFactory {
 
-    public static void create(Context context){
+    public static void create(Context context, int type){
         // Creamos Intent para el servicio
         Intent intent = new Intent(context, LocationService.class);
+        // Asignamos parametro de tipo
+        intent.putExtra(LocationService.EXTRA_TYPE_SERVICE, type);
         // Iniciamos el servicio
         context.startService(intent);
     }

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Looper;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.mobileia.authentication.MobileiaAuth;
 import com.mobileia.location.MobileiaLocation;
 import com.mobileia.location.receiver.LocationResultReceiver;
 
@@ -25,6 +27,16 @@ import com.mobileia.location.receiver.LocationResultReceiver;
 
 @SuppressWarnings("MissingPermission")
 public class LocationService extends Service {
+
+    public static final int TYPE_CURRENT = 0;
+    public static final int TYPE_BACKGROUND = 1;
+
+    public static final String EXTRA_TYPE_SERVICE = "com.mobileia.location.EXTRA_TYPE_SERVICE";
+    /**
+     * Almacena el tipo de servicio que se inicio
+     */
+    protected int mType = 0;
+
     /**
      * Servicio que se ejecuta al crear el servicio
      */
@@ -39,6 +51,14 @@ public class LocationService extends Service {
         }
         // Ejecutar petición de localización
         requestLocation();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        // Obtener parametro de Type
+        mType = intent.getIntExtra(EXTRA_TYPE_SERVICE, 0);
+        // Llamamos al padre
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable
@@ -66,9 +86,14 @@ public class LocationService extends Service {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-                //Log.d(MobileiaLocation.TAG_DEBUG, "Location: " + locationResult.getLastLocation().getLatitude() + " - " + locationResult.getLastLocation().getLongitude());
-                // Enviamos coordenadas
-                sendLocationWithBroadcast(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
+                // Verificamos que tipo es
+                if(mType == 0){
+                    // Enviamos coordenadas
+                    sendLocationWithBroadcast(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
+                }else if(mType == 1){
+                    // Guardamos coordenadas del dispositivo en el servidor
+                    saveLocationInServer(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
+                }
             }
         };
     }
@@ -103,5 +128,17 @@ public class LocationService extends Service {
         locationIntent.putExtra("message", error);
         // Enviamos broadcast
         sendBroadcast(locationIntent);
+    }
+
+    /**
+     * Se encarga de guardar las coordenadas en el servidor
+     * @param latitude
+     * @param longitude
+     */
+    protected void saveLocationInServer(double latitude, double longitude){
+        // Enviamos coordenadas al servidor
+        MobileiaAuth.getInstance(getApplicationContext()).registerLocationThisDevice(latitude, longitude);
+        // Cerramos servicio
+        stopSelf();
     }
 }

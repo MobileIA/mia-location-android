@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.mobileia.authentication.MobileiaAuth;
 import com.mobileia.location.MobileiaLocation;
 
 /**
@@ -18,7 +19,12 @@ public class LocationReceiver extends BroadcastReceiver {
     public static final int REQUEST_CODE = 8565;
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        Log.d(MobileiaLocation.TAG_DEBUG, "LocationReceiver Receive.");
+    public void onReceive(final Context context, Intent intent) {
+        // Verificar si el usuario esta logueado
+        if(MobileiaAuth.getInstance(context).getCurrentUser() == null){
+            return;
+        }
+        // Pedir Localización
+        new MobileiaLocation(context).requestLocationForSendToServer();
     }
 }

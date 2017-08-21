@@ -3,9 +3,12 @@ package com.mobileia.location;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.location.Location;
+import android.util.Log;
 
+import com.mobileia.location.factory.LocationReceiverFactory;
 import com.mobileia.location.factory.LocationServiceFactory;
 import com.mobileia.location.receiver.LocationResultReceiver;
+import com.mobileia.location.service.LocationService;
 
 /**
  * Created by matiascamiletti on 3/8/17.
@@ -55,7 +58,23 @@ public class MobileiaLocation {
             }
         });
         // Ejecutamos el servicio
-        LocationServiceFactory.create(mContext);
+        LocationServiceFactory.create(mContext, LocationService.TYPE_CURRENT);
+    }
+
+    /**
+     * Funcion que se encarga de iniciar el servicio para que guarde la localización en el servidor
+     */
+    public void requestLocationForSendToServer(){
+        // Ejecutamos el servicio
+        LocationServiceFactory.create(mContext, LocationService.TYPE_BACKGROUND);
+    }
+
+    /**
+     * Funcion para iniciar el servicio en background que obtiene la localización.
+     */
+    public void startBackgroundService(){
+        // Creamos LocationReceiver
+        LocationReceiverFactory.create(mContext);
     }
 
     /**

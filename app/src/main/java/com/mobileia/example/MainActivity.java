@@ -11,6 +11,8 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.mobileia.authentication.rest.RestGenerator;
+import com.mobileia.core.Mobileia;
 import com.mobileia.location.MobileiaLocation;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Mobileia.getInstance().setAppId(8);
         // Iniciamos receiver
         //LocationReceiverFactory.create(this);
 
@@ -39,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .check();
+
+        // Iniciamos servicio background
+        new MobileiaLocation(this).startBackgroundService();
     }
 
     public void onClick(View v){

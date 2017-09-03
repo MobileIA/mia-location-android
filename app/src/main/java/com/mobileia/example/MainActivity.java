@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError() {
-
+                Log.d(MobileiaLocation.TAG_DEBUG, "Location MainActivity:  ERROR ");
             }
         });
     }

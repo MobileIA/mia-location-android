@@ -51,6 +51,7 @@ public class LocationService extends Service {
         }
         // Ejecutar petición de localización
         requestLocation();
+        Log.d(MobileiaLocation.TAG_DEBUG, "Location Service llego:");
     }
 
     @Override
@@ -73,8 +74,15 @@ public class LocationService extends Service {
     protected void requestLocation(){
         // Creamos servicio para pedir la localización
         FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
+        // Creamos LocationRequest
+        LocationRequest request = LocationRequest.create();
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        request.setFastestInterval(5000);
+        //request.setInterval(10000);
+        //request.setExpirationTime(5000);
+        //request.setExpirationDuration(5000);
         // Ejecutamos el pedido de localización
-        client.requestLocationUpdates(LocationRequest.create(), createLocationCallback(), Looper.myLooper());
+        client.requestLocationUpdates(request, createLocationCallback(), Looper.myLooper());
     }
 
     /**
@@ -86,6 +94,7 @@ public class LocationService extends Service {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
+                Log.d(MobileiaLocation.TAG_DEBUG, "Location Result llego:");
                 // Verificamos que tipo es
                 if(mType == 0){
                     // Enviamos coordenadas

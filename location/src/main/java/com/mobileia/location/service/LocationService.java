@@ -51,7 +51,6 @@ public class LocationService extends Service {
         }
         // Ejecutar petición de localización
         requestLocation();
-        Log.d(MobileiaLocation.TAG_DEBUG, "Location Service llego:");
     }
 
     @Override

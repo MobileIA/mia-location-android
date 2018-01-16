@@ -24,7 +24,7 @@ public class LocationReceiver extends BroadcastReceiver {
         if(MobileiaAuth.getInstance(context).getCurrentUser() == null){
             return;
         }
-        // Pedir Localización
+        // Pedir Localizacion
         new MobileiaLocation(context).requestLocationForSendToServer();
     }
 }

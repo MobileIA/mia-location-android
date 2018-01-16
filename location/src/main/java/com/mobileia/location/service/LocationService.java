@@ -43,13 +43,13 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        // Verificar si tiene permisos para pedir la localización
+        // Verificar si tiene permisos para pedir la localizacion
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Enviamos mensaje de error
             sendErrorWithBroadcast("No tiene permisos");
             return;
         }
-        // Ejecutar petición de localización
+        // Ejecutar peticion de localizacion
         requestLocation();
     }
 
@@ -68,10 +68,10 @@ public class LocationService extends Service {
     }
 
     /**
-     * Metodo que realiza la petición
+     * Metodo que realiza la peticion
      */
     protected void requestLocation(){
-        // Creamos servicio para pedir la localización
+        // Creamos servicio para pedir la localizacion
         FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
         // Creamos LocationRequest
         LocationRequest request = LocationRequest.create();
@@ -80,7 +80,7 @@ public class LocationService extends Service {
         //request.setInterval(10000);
         //request.setExpirationTime(5000);
         //request.setExpirationDuration(5000);
-        // Ejecutamos el pedido de localización
+        // Ejecutamos el pedido de localizacion
         client.requestLocationUpdates(request, createLocationCallback(), Looper.myLooper());
     }
 

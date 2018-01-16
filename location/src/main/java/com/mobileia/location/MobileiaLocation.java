@@ -31,7 +31,7 @@ public class MobileiaLocation {
     public MobileiaLocation(Context context){ this.mContext = context; }
 
     /**
-     * Funcion que se encarga de realizar una petición de localización
+     * Funcion que se encarga de realizar una peticion de localizacion
      * @param callback
      */
     public void requestLocation(final OnLocationResult callback){
@@ -62,7 +62,7 @@ public class MobileiaLocation {
     }
 
     /**
-     * Funcion que se encarga de iniciar el servicio para que guarde la localización en el servidor
+     * Funcion que se encarga de iniciar el servicio para que guarde la localizacion en el servidor
      */
     public void requestLocationForSendToServer(){
         // Ejecutamos el servicio
@@ -70,7 +70,7 @@ public class MobileiaLocation {
     }
 
     /**
-     * Funcion para iniciar el servicio en background que obtiene la localización.
+     * Funcion para iniciar el servicio en background que obtiene la localizacion.
      */
     public void startBackgroundService(){
         // Creamos LocationReceiver
@@ -92,7 +92,7 @@ public class MobileiaLocation {
     }
 
     /**
-     * Funcion que registra el receiver de localización
+     * Funcion que registra el receiver de localizacion
      * @param receiver
      */
     protected void registerReceiver(LocationResultReceiver receiver){
@@ -104,7 +104,7 @@ public class MobileiaLocation {
     }
 
     /**
-     * Interface para recibir respuesta de localización
+     * Interface para recibir respuesta de localizacion
      */
     public interface OnLocationResult{
         void onLocation(double latitude, double longitude);
